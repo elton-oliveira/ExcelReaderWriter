@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -54,7 +55,11 @@ public class ExcelLeitor {
 	public List<String[]> lerExcel(InputStream stream, int sheetIndex) {
 		Workbook workbook = this.createWorkbook(stream);
 		Sheet sheet = workbook.getSheetAt(sheetIndex);
-		return read(sheet);
+		if (sheet == null) {
+			throw new IllegalArgumentException("Planilha inexistente");
+		}
+		FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
+		return read(sheet, evaluator);
 	}
 
 	/**
@@ -63,13 +68,14 @@ public class ExcelLeitor {
 	 * @param sheetName representa o nome da sheet que deve ser lida
 	 * @return o resultado da leitura onde cada linha do excel é armazenado em um array de String
 	 */
-	public List<String[]> read(InputStream stream, String sheetName) {
+	public List<String[]> lerExcel(InputStream stream, String sheetName) {
 		Workbook workbook = this.createWorkbook(stream);
 		Sheet sheet = workbook.getSheet(sheetName);
 		if (sheet == null) {
 			throw new IllegalArgumentException("Planilha inexistente");
 		}
-		return read(sheet);
+		FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
+		return read(sheet, evaluator);
 	}
 
 	/*
@@ -88,14 +94,14 @@ public class ExcelLeitor {
 	/*
 	 * Realiza a leitura da planilha
 	 */
-	private List<String[]> read(Sheet sheet) {
+	private List<String[]> read(Sheet sheet, FormulaEvaluator evaluator) {
 		List<String[]> rowList = new ArrayList<String[]>();
 		for (Row row : sheet) {
 			int rowSize = row.getLastCellNum();
 			String[] rowValues = new String[rowSize];
 			for (int cn = 0; cn < rowSize; cn++) {
 				Cell cell = row.getCell(cn, Row.CREATE_NULL_AS_BLANK);
-				String cellValue = this.getCellValue(cell);
+				String cellValue = this.getCellValue(cell, evaluator);
 				rowValues[cn] = cellValue;
 			}
 			rowList.add(rowValues);
@@ -107,7 +113,7 @@ public class ExcelLeitor {
 	/*
 	 * Extrai e retorna o valor da célula em forma de String
 	 */
-	private String getCellValue(Cell cell) {
+	private String getCellValue(Cell cell, FormulaEvaluator evaluator) {
 		String cellValue = null;
 		switch (cell.getCellType()) {
 		case Cell.CELL_TYPE_STRING:
@@ -126,7 +132,8 @@ public class ExcelLeitor {
 			cellValue = String.valueOf(cell.getBooleanCellValue());
 			break;
 		case Cell.CELL_TYPE_FORMULA:
-			cellValue = cell.getCellFormula();
+			//TODO PEGAR O VALOR CORRETO
+			cellValue = String.valueOf(evaluator.evaluate(cell));
 			break;
 		}
 		return cellValue;
