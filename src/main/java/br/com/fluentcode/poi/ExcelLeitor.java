@@ -94,7 +94,7 @@ public class ExcelLeitor {
 		Iterator<Row> rowIterator = sheet.rowIterator();
 		while (rowIterator.hasNext()) {
 			Row row = rowIterator.next();
-			String[] rowValues = new String[row.getLastCellNum() + 1];
+			String[] rowValues = new String[row.getLastCellNum()];
 			Iterator<Cell> cellIterator = row.cellIterator();
 			int i = 0;
 			while (cellIterator.hasNext()) {
