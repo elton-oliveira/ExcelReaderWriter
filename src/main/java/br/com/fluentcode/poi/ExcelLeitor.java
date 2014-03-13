@@ -108,21 +108,28 @@ public class ExcelLeitor {
 	 * Extrai e retorna o valor da célula em forma de String
 	 */
 	private String getCellValue(Cell cell) {
+		String cellValue = null;
 		switch (cell.getCellType()) {
 		case Cell.CELL_TYPE_STRING:
-			return cell.getStringCellValue();
+			cellValue = cell.getStringCellValue();
+			break;
 		case Cell.CELL_TYPE_NUMERIC:
 			if (DateUtil.isCellDateFormatted(cell)) {
-				return dateFormat.format(cell.getDateCellValue());
+				cellValue =  dateFormat.format(cell.getDateCellValue());
 			} else {
 				cell.setCellType(Cell.CELL_TYPE_STRING);
-				return new BigDecimal(cell.getStringCellValue()).toPlainString();
+				cellValue = new BigDecimal(cell.getStringCellValue())
+						.toPlainString();
 			}
+			break;
 		case Cell.CELL_TYPE_BOOLEAN:
-			return String.valueOf(cell.getBooleanCellValue());
-		default:
-			return null;
+			cellValue = String.valueOf(cell.getBooleanCellValue());
+			break;
+		case Cell.CELL_TYPE_FORMULA:
+			cellValue = cell.getCellFormula();
+			break;
 		}
+		return cellValue;
 	}
 	
 }
