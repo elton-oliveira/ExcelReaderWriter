@@ -4,7 +4,6 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -91,19 +90,17 @@ public class ExcelLeitor {
 	 */
 	private List<String[]> read(Sheet sheet) {
 		List<String[]> rowList = new ArrayList<String[]>();
-		Iterator<Row> rowIterator = sheet.rowIterator();
-		while (rowIterator.hasNext()) {
-			Row row = rowIterator.next();
-			String[] rowValues = new String[row.getLastCellNum()];
-			Iterator<Cell> cellIterator = row.cellIterator();
-			int i = 0;
-			while (cellIterator.hasNext()) {
-				Cell cell = cellIterator.next();
+		for (Row row : sheet) {
+			int rowSize = row.getLastCellNum();
+			String[] rowValues = new String[rowSize];
+			for (int cn = 0; cn < rowSize; cn++) {
+				Cell cell = row.getCell(cn, Row.CREATE_NULL_AS_BLANK);
 				String cellValue = this.getCellValue(cell);
-				rowValues[i++] = cellValue;
+				rowValues[cn] = cellValue;
 			}
 			rowList.add(rowValues);
 		}
+
 		return rowList;
 	}
 
