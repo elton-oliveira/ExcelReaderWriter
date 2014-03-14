@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellValue;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Row;
@@ -116,25 +117,35 @@ public class ExcelLeitor {
 	private String getCellValue(Cell cell, FormulaEvaluator evaluator) {
 		String cellValue = null;
 		switch (cell.getCellType()) {
-		case Cell.CELL_TYPE_STRING:
-			cellValue = cell.getStringCellValue();
-			break;
-		case Cell.CELL_TYPE_NUMERIC:
-			if (DateUtil.isCellDateFormatted(cell)) {
-				cellValue =  dateFormat.format(cell.getDateCellValue());
-			} else {
-				cell.setCellType(Cell.CELL_TYPE_STRING);
-				cellValue = new BigDecimal(cell.getStringCellValue())
-						.toPlainString();
-			}
-			break;
-		case Cell.CELL_TYPE_BOOLEAN:
-			cellValue = String.valueOf(cell.getBooleanCellValue());
-			break;
-		case Cell.CELL_TYPE_FORMULA:
-			//TODO PEGAR O VALOR CORRETO
-			cellValue = String.valueOf(evaluator.evaluate(cell));
-			break;
+			case Cell.CELL_TYPE_STRING:
+				cellValue = cell.getStringCellValue();
+				break;
+			case Cell.CELL_TYPE_NUMERIC:
+				if (DateUtil.isCellDateFormatted(cell)) {
+					cellValue =  dateFormat.format(cell.getDateCellValue());
+				} else {
+					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cellValue = new BigDecimal(cell.getStringCellValue())
+							.toPlainString();
+				}
+				break;
+			case Cell.CELL_TYPE_BOOLEAN:
+				cellValue = String.valueOf(cell.getBooleanCellValue());
+				break;
+			case Cell.CELL_TYPE_FORMULA:
+					CellValue cv = evaluator.evaluate(cell);
+					switch (cv.getCellType()) {
+					case Cell.CELL_TYPE_BOOLEAN:
+						cellValue = String.valueOf(cv.getBooleanValue());
+						break;
+					case Cell.CELL_TYPE_NUMERIC:
+						cellValue = String.valueOf(cv.getNumberValue());
+						break;
+					case Cell.CELL_TYPE_STRING:
+						cellValue = cv.getStringValue();
+						break;
+					}
+					break;
 		}
 		return cellValue;
 	}
