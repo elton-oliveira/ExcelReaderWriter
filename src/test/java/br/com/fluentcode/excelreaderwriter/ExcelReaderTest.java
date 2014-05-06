@@ -1,4 +1,4 @@
-package br.com.fluentcode.poi;
+package br.com.fluentcode.excelreaderwriter;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -13,6 +13,10 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import br.com.fluentcode.excelreaderwriter.ExcelBinaryGenerator;
+import br.com.fluentcode.excelreaderwriter.ExcelReader;
+import br.com.fluentcode.excelreaderwriter.ExcelWriter;
 
 
 public class ExcelReaderTest {

@@ -1,4 +1,4 @@
-package br.com.fluentcode.poi;
+package br.com.fluentcode.excelreaderwriter;
 
 import java.math.BigDecimal;
 import java.util.Date;
