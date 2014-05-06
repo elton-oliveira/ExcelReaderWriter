@@ -12,48 +12,47 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 /**
  * 
- * Componente abstrato para escrita de excel.
- * Deve obrigatoriamente implementar o método {@link #criarWorkbook()}
+ * Abstract component for writing excel document.
+ * Must implement the method {@link #createWorkbook()}
  *
  */
-public abstract class ExcelEscritor {
+public abstract class ExcelWriter {
 
-	private static String DEFAULT_SHEET_NAME = "Plan1";
-	private static String DOUBLE_CELL_STYLE = "#.##";
-	private static String DATE_CELL_STYLE = "dd/MM/yyyy";
+	private static final String DEFAULT_SHEET_NAME = "Plan1";
+	private static final String DOUBLE_CELL_STYLE = "#.##";
+	private static final String DATE_CELL_STYLE = "dd/MM/yyyy";
 
 	/**
-	 * Cria um Workbook: HSSFWorkbook para xls e XSSFWorkbook para xlsx
+	 * Create Workbook: HSSFWorkbook for xls and XSSFWorkbook for xlsx
 	 *
 	 */
-	protected abstract Workbook criarWorkbook();
+	protected abstract Workbook createWorkbook();
 	
 	/**
-	 * 
-	 * Invocado após setar o valor da célula, pode ser utilizado para setar uma formatação
-	 * Sua implementação não é obrigatória
+	 * Invoked after set the cell value, can be used to set formatting.
+	 * Its implementation is not mandatory.
 	 */
 	protected void postCellValue(Cell cell){	}
 
 	/**
-	 * Escreve o excel com nome padrão de planilha: Plan1
+	 * Writes excel  with the default name spreadsheet: Plan1
 	 * 
-	 * @param rowList dados para compor a planilha
-	 * @return Workbook representação da planilha
+	 * @param rowList the data to compose the spreadsheet
+	 * @return Workbook the representation excel document
 	 */
-	public <T> Workbook escreverExcel(List<T[]> rowList) {
+	public <T> Workbook writeExcel(List<T[]> rowList) {
 		return escreverExcel(DEFAULT_SHEET_NAME, rowList);
 	}
 
 	/**
-	 * Escreve o excel
+	 * Write the excel document
 	 * 
-	 * @param sheetName nome da planilha
-	 * @param rowList dados para compor a planilha
-	 * @return Workbook representação da planilha
+	 * @param sheetName the sheet name
+	 * @param rowList the data to compose the spreadsheet
+	 * @return Workbook he representation excel document
 	 */
 	public <T> Workbook escreverExcel(String sheetName, List<T[]> rowList) {
-		Workbook workbook = criarWorkbook();
+		Workbook workbook = createWorkbook();
 		Sheet sheet = workbook.createSheet(sheetName);
 		CellStyle doubleCellStyle = workbook.createCellStyle();
 		doubleCellStyle.setDataFormat(workbook.getCreationHelper().createDataFormat()

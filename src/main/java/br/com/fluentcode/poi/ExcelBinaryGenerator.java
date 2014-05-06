@@ -5,9 +5,9 @@ import java.io.IOException;
 
 import org.apache.poi.ss.usermodel.Workbook;
 
-public class ExcelGeradorBinario {
+public class ExcelBinaryGenerator {
 
-	public byte[] gerarByteArray(Workbook workbook) throws IOException {
+	public byte[] generateByteArray(Workbook workbook) throws IOException {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		workbook.write(bos);
 		return  bos.toByteArray();

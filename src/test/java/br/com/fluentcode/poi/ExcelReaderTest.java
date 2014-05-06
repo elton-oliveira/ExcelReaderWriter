@@ -15,19 +15,19 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-public class ExcelLeitorTest {
+public class ExcelReaderTest {
 
-	private ExcelLeitor leitor;
+	private ExcelReader reader;
 	private InputStream stream;
 
 	@Before
 	public void setup() throws IOException {
 		
-		leitor = new ExcelLeitor();
+		reader = new ExcelReader();
 		
-		ExcelEscritor writer = new ExcelEscritor() {
+		ExcelWriter writer = new ExcelWriter() {
 			@Override
-			protected Workbook criarWorkbook() {
+			protected Workbook createWorkbook() {
 				return new HSSFWorkbook() ;
 			}
 		};
@@ -38,17 +38,17 @@ public class ExcelLeitorTest {
 		rowList.add(rowValues0);
 		rowList.add(rowValues1);
 		
-		Workbook workbook = writer.escreverExcel(rowList);
+		Workbook workbook = writer.writeExcel(rowList);
 		
-		//Obtém o input stream do workbook
-		ExcelGeradorBinario binario = new ExcelGeradorBinario();
-		byte[] byteArray = binario.gerarByteArray(workbook);
+		//Gets the workbook input stream
+		ExcelBinaryGenerator binario = new ExcelBinaryGenerator();
+		byte[] byteArray = binario.generateByteArray(workbook);
 		stream = new ByteArrayInputStream(byteArray);
 	}
 
 	@Test
-	public void deveLerOExcel() {
-		List<String[]> rows = leitor.lerExcel(stream);
+	public void shouldReadExcel() {
+		List<String[]> rows = reader.readExcel(stream);
 		String[] row0 = rows.get(0);
 		String[] row1 = rows.get(1);
 		Assert.assertEquals("2", row0[0]);

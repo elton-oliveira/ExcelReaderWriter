@@ -17,43 +17,44 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 /**
  * 
- * Componente para leitura de documentos excel.
+ * Component for reading excel document.
  *
  */
-public class ExcelLeitor {
+public class ExcelReader {
 	
 	private SimpleDateFormat dateFormat;
 	
 	/**
 	 * 
-	 * @param dateFormat formato que deve ser retornado os valores das células do tipo data.
-	 * Se for utilizado o construtor sem argumentos será utilizado o formato 'dd/MM/yyyy'
+	 * @param dateFormat the format that the cell values ​​of type date should be returned.
+	 * If the no-argument constructor is used the format 'dd/MM/yyyy' will be used.
 	 */
-	public ExcelLeitor(SimpleDateFormat dateFormat) {
+	public ExcelReader(SimpleDateFormat dateFormat) {
 		this.dateFormat = dateFormat;
 	}
 	
-	public ExcelLeitor() {
+	public ExcelReader() {
 		dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 	}
 
 	/**
-	 * Realiza a leitura da primeira sheet do excel
+	 * Read the first sheet
 	 * 
-	 * @param stream representa o input stream do excel
-	 * @return o resultado da letura onde cada linha do excel é armazenado em um array de String
+	 * @param stream the input stream excel document
+	 * @return the reading result where each line is stored in an array of String
 	 */
-	public List<String[]> lerExcel(InputStream stream) {
-		return lerExcel(stream, 0);
+	public List<String[]> readExcel(InputStream stream) {
+		return readExcel(stream, 0);
 	}
 
 	/**
+	 * Read the sheet whose index is passed as parameter.
 	 * 
-	 * @param stream representa o input stream do excel
-	 * @param sheetIndex representa o index (baseado em 0) da sheet que deve ser lida
-	 * @return o resultado da leitura onde cada linha do excel é armazenado em um array de String
+	 * @param stream the input stream excel document
+	 * @param sheetIndex the index (0-based) of the sheet which is to be read
+	 * @return the reading result where each line is stored in an array of String
 	 */
-	public List<String[]> lerExcel(InputStream stream, int sheetIndex) {
+	public List<String[]> readExcel(InputStream stream, int sheetIndex) {
 		Workbook workbook = this.createWorkbook(stream);
 		Sheet sheet = workbook.getSheetAt(sheetIndex);
 		if (sheet == null) {
@@ -65,11 +66,11 @@ public class ExcelLeitor {
 
 	/**
 	 * 
-	 * @param stream representa o input stream do excel
-	 * @param sheetName representa o nome da sheet que deve ser lida
-	 * @return o resultado da leitura onde cada linha do excel é armazenado em um array de String
+	 * @param stream the input stream excel document
+	 * @param sheetName the sheet name which is to be read
+	 * @return the reading result where each line is stored in an array of String
 	 */
-	public List<String[]> lerExcel(InputStream stream, String sheetName) {
+	public List<String[]> readExcel(InputStream stream, String sheetName) {
 		Workbook workbook = this.createWorkbook(stream);
 		Sheet sheet = workbook.getSheet(sheetName);
 		if (sheet == null) {
@@ -80,7 +81,7 @@ public class ExcelLeitor {
 	}
 
 	/*
-	 * Cria o workbook, a representação do excel
+	 * Create the workbook
 	 */
 	private Workbook createWorkbook(InputStream stream) {
 		Workbook workbook = null;
@@ -93,7 +94,7 @@ public class ExcelLeitor {
 	}
 
 	/*
-	 * Realiza a leitura da planilha
+	 * Read sheet
 	 */
 	private List<String[]> read(Sheet sheet, FormulaEvaluator evaluator) {
 		List<String[]> rowList = new ArrayList<String[]>();
@@ -112,7 +113,7 @@ public class ExcelLeitor {
 	}
 
 	/*
-	 * Extrai e retorna o valor da célula em forma de String
+	 * Extracts and returns the cell value as a String
 	 */
 	private String getCellValue(Cell cell, FormulaEvaluator evaluator) {
 		String cellValue = null;
