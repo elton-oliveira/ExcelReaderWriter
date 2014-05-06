@@ -65,6 +65,7 @@ public class ExcelReader {
 	}
 
 	/**
+	 * Read the sheet whose name is passed as parameter.
 	 * 
 	 * @param stream the input stream excel document
 	 * @param sheetName the sheet name which is to be read

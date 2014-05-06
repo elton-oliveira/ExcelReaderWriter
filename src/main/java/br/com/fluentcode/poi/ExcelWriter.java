@@ -49,7 +49,7 @@ public abstract class ExcelWriter {
 	 * 
 	 * @param sheetName the sheet name
 	 * @param rowList the data to compose the spreadsheet
-	 * @return Workbook he representation excel document
+	 * @return Workbook the representation excel document
 	 */
 	public <T> Workbook escreverExcel(String sheetName, List<T[]> rowList) {
 		Workbook workbook = createWorkbook();
