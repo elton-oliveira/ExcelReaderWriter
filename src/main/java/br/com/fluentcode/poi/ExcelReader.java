@@ -58,7 +58,7 @@ public class ExcelReader {
 		Workbook workbook = this.createWorkbook(stream);
 		Sheet sheet = workbook.getSheetAt(sheetIndex);
 		if (sheet == null) {
-			throw new IllegalArgumentException("Planilha inexistente");
+			throw new IllegalArgumentException("Absent sheet");
 		}
 		FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
 		return read(sheet, evaluator);
@@ -74,7 +74,7 @@ public class ExcelReader {
 		Workbook workbook = this.createWorkbook(stream);
 		Sheet sheet = workbook.getSheet(sheetName);
 		if (sheet == null) {
-			throw new IllegalArgumentException("Planilha inexistente");
+			throw new IllegalArgumentException("Absent sheet");
 		}
 		FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
 		return read(sheet, evaluator);
@@ -88,7 +88,7 @@ public class ExcelReader {
 		try {
 			workbook = WorkbookFactory.create(stream);
 		} catch (Exception e) {
-			throw new IllegalArgumentException("Erro ao tentar criar o excel", e);
+			throw new IllegalArgumentException("Error while trying to create workbook", e);
 		}
 		return workbook;
 	}
