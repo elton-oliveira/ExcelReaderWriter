@@ -14,11 +14,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import br.com.fluentcode.excelreaderwriter.ExcelBinaryGenerator;
-import br.com.fluentcode.excelreaderwriter.ExcelReader;
-import br.com.fluentcode.excelreaderwriter.ExcelWriter;
-
-
 public class ExcelReaderTest {
 
 	private ExcelReader reader;
