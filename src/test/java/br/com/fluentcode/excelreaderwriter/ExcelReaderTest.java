@@ -1,5 +1,8 @@
 package br.com.fluentcode.excelreaderwriter;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,7 +13,6 @@ import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -50,13 +52,12 @@ public class ExcelReaderTest {
 		List<String[]> rows = reader.readExcel(stream);
 		String[] row0 = rows.get(0);
 		String[] row1 = rows.get(1);
-		Assert.assertEquals("2", row0[0]);
-		Assert.assertEquals("2000.568", row0[1]);
-		Assert.assertEquals(String.valueOf(Integer.MAX_VALUE), row0[2]);
-		Assert.assertEquals("78776666.789", row0[3]);
-		Assert.assertEquals("13/03/2014", row1[0]);
-		Assert.assertEquals("true", row1[1]);
-		
+		assertThat(row0[0], equalTo("2"));
+		assertThat(row0[1], equalTo("2000.568"));
+		assertThat(row0[2], equalTo(String.valueOf(Integer.MAX_VALUE)));
+		assertThat(row0[3], equalTo("78776666.789"));
+		assertThat(row1[0], equalTo("13/03/2014"));
+		assertThat(row1[1], equalTo("true"));
 	}
 	
 }
