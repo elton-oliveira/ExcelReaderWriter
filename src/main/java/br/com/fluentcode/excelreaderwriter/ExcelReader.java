@@ -15,6 +15,8 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
+import com.google.common.base.Preconditions;
+
 /**
  * 
  * Component for reading excel document.
@@ -57,9 +59,7 @@ public class ExcelReader {
 	public List<String[]> readExcel(InputStream stream, int sheetIndex) {
 		Workbook workbook = this.createWorkbook(stream);
 		Sheet sheet = workbook.getSheetAt(sheetIndex);
-		if (sheet == null) {
-			throw new IllegalArgumentException("Absent sheet");
-		}
+		Preconditions.checkNotNull(sheet, "Absent sheet");
 		FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
 		return read(sheet, evaluator);
 	}
@@ -74,9 +74,7 @@ public class ExcelReader {
 	public List<String[]> readExcel(InputStream stream, String sheetName) {
 		Workbook workbook = this.createWorkbook(stream);
 		Sheet sheet = workbook.getSheet(sheetName);
-		if (sheet == null) {
-			throw new IllegalArgumentException("Absent sheet");
-		}
+		Preconditions.checkNotNull(sheet, "Absent sheet");
 		FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
 		return read(sheet, evaluator);
 	}
